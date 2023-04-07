@@ -92,8 +92,17 @@ namespace DB2VM.Controller
                 string 藥品學名 = class_BBCM_Datas[i].藥品學名;
                 string 中文名稱 = class_BBCM_Datas[i].中文名稱;
                 string 包裝單位 = class_BBCM_Datas[i].包裝單位;
+                if (class_BBCM_Datas[i].警訊藥品 == "Y")
+                {
+                    class_BBCM_Datas[i].警訊藥品 = "True";
+                }
+                else
+                {
+                    class_BBCM_Datas[i].警訊藥品 = "False";
+                }
                 string 警訊藥品 = class_BBCM_Datas[i].警訊藥品;
                 string 類別 = class_BBCM_Datas[i].類別;
+              
                 string 管制級別 = class_BBCM_Datas[i].管制級別;
 
                 list_藥檔資料_buf = list_藥檔資料.GetRows((int)enum_雲端藥檔.藥品碼, 藥品碼);
@@ -113,7 +122,7 @@ namespace DB2VM.Controller
                 }
                 else
                 {
-                    object[] value = list_藥檔資料[0];
+                    object[] value = list_藥檔資料_buf[0];
                     value[(int)enum_雲端藥檔.藥品碼] = 藥品碼;
                     value[(int)enum_雲端藥檔.藥品名稱] = 藥品名稱;
                     value[(int)enum_雲端藥檔.中文名稱] = 中文名稱;
