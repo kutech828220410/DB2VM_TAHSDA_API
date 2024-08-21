@@ -12,30 +12,13 @@ using SQLUI;
 using System.Xml;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using HIS_DB_Lib;
 namespace DB2VM.Controller
 {
     [Route("dbvm/[controller]")]
     [ApiController]
     public class BBCMController : ControllerBase
-    {
-        public enum enum_雲端藥檔
-        {
-            GUID,
-            藥品碼,
-            中文名稱,
-            藥品名稱,
-            藥品學名,
-            健保碼,
-            包裝單位,
-            包裝數量,
-            最小包裝單位,
-            最小包裝數量,
-            藥品條碼1,
-            藥品條碼2,
-            警訊藥品,
-            管制級別,
-            類別
-        }
+    { 
         public class class_BBCM_data
         {
             [JsonPropertyName("MEDCODE")]
@@ -78,7 +61,7 @@ namespace DB2VM.Controller
             }
             string PostString = "";
             if (codes.Count > 0) PostString = codes.JsonSerializationt();
-            string jsonstring = Basic.Net.WEBApiPostJson("https://phpsrv.tahsda.org.tw/phsapi/medicine_page.php", PostString);
+            string jsonstring = Basic.Net.WEBApiPostJson("https://phpsrv.tahsda.org.tw/api/medicine_page.php", PostString);
             //jsonstring = System.Text.RegularExpressions.Regex.Unescape(jsonstring);
             class_BBCM_Datas = jsonstring.JsonDeserializet<List<class_BBCM_data>>();
             List<object[]> list_藥檔資料 = sQLControl_藥檔資料.GetAllRows(null);

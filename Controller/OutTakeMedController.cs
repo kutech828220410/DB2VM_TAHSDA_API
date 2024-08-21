@@ -13,35 +13,10 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using HIS_DB_Lib;
 namespace DB2VM_API
 {
-    public class class_OutTakeMed_data
-    {
-        [JsonPropertyName("PRI_KEY")]
-        public string PRI_KEY { get; set; }
-        [JsonPropertyName("MC_name")]
-        public string 電腦名稱 { get; set; }
-        [JsonPropertyName("cost_center")]
-        public string 成本中心 { get; set; }
-        [JsonPropertyName("src_storehouse")]
-        public string 來源庫別 { get; set; }
-        [JsonPropertyName("code")]
-        public string 藥品碼 { get; set; }
-        [JsonPropertyName("value")]
-        public string 交易量 { get; set; }
-        [JsonPropertyName("operator")]
-        public string 操作人 { get; set; }
-        [JsonPropertyName("ID")]
-        public string ID { get; set; }
-        [JsonPropertyName("patient_name")]
-        public string 病人姓名 { get; set; }
-        [JsonPropertyName("patient_code")]
-        public string 病歷號 { get; set; }
-        [JsonPropertyName("prescription_time")]
-        public string 開方時間 { get; set; }
-        [JsonPropertyName("OP_type")]
-        public string 功能類型 { get; set; }
-    }
+   
 
     [Route("api/[controller]")]
     [ApiController]
@@ -60,6 +35,17 @@ namespace DB2VM_API
         {
             if (data.Count == 0) return "";
             string json = data.JsonSerializationt();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                string code = data[i].藥品碼;
+                medClass medClass = medClass.get_med_clouds_by_code("http:/127.0.0.1:4433", code);
+                if (medClass != null)
+                {
+                    data[i].藥名 = medClass.藥品名稱;
+                    data[i].單位 = medClass.包裝單位;
+                }
+            }
             string str = "";
             if(data[0].成本中心 == "1")
             {
